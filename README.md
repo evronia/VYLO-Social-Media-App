@@ -1,6 +1,6 @@
-# Vibe Social App
+# VYLO Social App
 
-Vibe is a responsive social networking app built with React and TypeScript. Users can create posts, interact with the community, manage their profile, and discover accounts to follow.
+VYLO is a responsive social networking app built with React and TypeScript. Users can create posts, interact with the community, manage their profile, and discover accounts to follow.
 
 ## Features
 
