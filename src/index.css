@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@theme {
+  --color-deep: #5a123d;
+  --color-burgundy: #8b1e5d;
+  --color-primePink: #c44569;
+  --color-lightPink: #f78fb3;
+  --color-darkText: #0f172b;
+  --color-lightText: #314158;
+  --color-softRose: #fff7fe;
+}
+
+input[type="date"] {
+  color: var(--color-lightPink);
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  color: var(--color-lightPink);
+}
+
+input[type="date"]::-webkit-datetime-edit-text {
+  color: var(--color-lightPink);
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: var(--color-lightPink);
+}
+
+.btnPost{
+  @apply flex items-center justify-center gap-2 rounded-xl border border-lightPink px-3 py-2 text-sm sm:px-4 sm:text-base cursor-pointer transition-all duration-300 hover:border-burgundy hover:bg-burgundy hover:text-softRose
+}
+
+.dropDownStyle{
+  @apply flex bg-softRose transition-all duration-300 justify-between py-3 px-4 border border-transparent  mb-2 text-burgundy hover:bg-white! hover:border-lightPink
+}
+.dropDownNavbarProfile{
+  @apply  transition-all duration-300 border border-transparent rounded-2xl hover:bg-softRose hover:border-lightPink
+}

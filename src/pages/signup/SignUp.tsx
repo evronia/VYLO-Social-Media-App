@@ -1,0 +1,357 @@
+import { useForm } from "react-hook-form";
+import "../../schemas/signup.schema";
+import { toast } from "@heroui/react";
+import axios, { isAxiosError } from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "../../schemas/signup.schema";
+import type { signUpDataType } from "./signup.types";
+import { useState } from "react";
+import { Hearts } from "react-loader-spinner";
+import { NavLink, useNavigate } from "react-router-dom";
+
+export default function SignUp() {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      dateOfBirth: new Date(),
+      gender: "male",
+      password: "",
+      rePassword: "",
+    },
+
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  let nav = useNavigate();
+
+  async function myHandleSubmit(values: signUpDataType) {
+    if (loading == true) {
+      return;
+    }
+    try {
+      setLoading(true);
+      let { data } = await axios.post(
+        "https://route-posts.routemisr.com/users/signup",
+        values,
+      );
+      toast.success(data.message);
+      setTimeout(function () {
+        nav("/login");
+      }, 2000);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.danger(error.response?.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <div className="bg-softRose min-h-screen px-4 py-8 sm:py-12 lg:flex lg:items-center">
+        <div className="container flex flex-wrap justify-around">
+          <div className="md:w-1/3">
+            <h1 className="bg-linear-to-r from-burgundy via-primePink to-lightPink bg-clip-text text-transparent hidden text-5xl font-extrabold tracking-tight sm:text-6xl lg:block">
+              VYLO
+            </h1>
+            <p className="hidden mt-4 text-2xl font-medium leading-snug text-darkText lg:block">
+              Connect with friends and the world around you on VYLO.
+            </p>
+            <div className="mt-6 rounded-2xl border border-lightPink bg-white/80 p-4 shadow-sm backdrop-blur sm:p-5">
+              <p className="bg-linear-to-r from-burgundy via-primePink to-lightPink bg-clip-text text-transparent text-5xl font-bold tracking-tight">
+                About VYLO
+              </p>
+              <p className="mt-1 text-sm font-bold text-darkText">
+                Born in <span className="text-burgundy">Egypt</span>, Made for
+                Everyone
+              </p>
+              <p className="mt-1 text-sm font-bold text-darkText">
+                Where Ideas, Moments & People Come Together
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-lightText">
+                VYLO is a social media app made to bring people together and
+                make sharing feel more real. Share your moments, thoughts, and
+                achievements, connect with people who share your interests,
+                discover new content, and be part of a community where everyone
+                has something to say. With VYLO, it’s not just about likes and
+                follows. it’s about sharing, discovering, and creating
+                meaningful connections.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border border-lightPink bg-softRose px-3 py-2">
+                  <p className="text-base font-extrabold text-deep">2026</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-burgundy">
+                    Founded
+                  </p>
+                </div>
+                <div className="rounded-xl border border-lightPink bg-softRose px-3 py-2">
+                  <p className="text-base font-extrabold text-deep">100+</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-burgundy">
+                    COMMUNITIES
+                  </p>
+                </div>
+                <div className="rounded-xl border border-lightPink bg-softRose px-3 py-2">
+                  <p className="text-base font-extrabold text-deep">50K+</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-burgundy">
+                    Users
+                  </p>
+                </div>
+                <div className="rounded-xl border border-lightPink bg-softRose px-3 py-2">
+                  <p className="text-base font-extrabold text-deep">24/7</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-burgundy">
+                    support
+                  </p>
+                </div>
+                <div className="rounded-xl border border-lightPink bg-softRose px-3 py-2">
+                  <p className="text-base font-extrabold text-deep">10K+</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-burgundy">
+                    posts
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="md:w-1/3">
+            <nav
+              aria-label="Account access"
+              className="mb-4 flex w-full rounded-2xl border border-lightPink bg-white/80 p-1.5 shadow-sm"
+            >
+              <NavLink
+                to="/login"
+                end
+                className={({ isActive }) =>
+                  `flex-1 rounded-xl px-4 py-3 text-center font-semibold transition-colors ${
+                    isActive
+                      ? "bg-burgundy text-white shadow-sm"
+                      : "text-burgundy hover:bg-softRose"
+                  }`
+                }
+              >
+                LogIn
+              </NavLink>
+              <NavLink
+                to="/signup"
+                end
+                className={({ isActive }) =>
+                  `flex-1 rounded-xl px-4 py-3 text-center font-semibold transition-colors ${
+                    isActive
+                      ? "bg-burgundy text-white shadow-sm"
+                      : "text-burgundy hover:bg-softRose"
+                  }`
+                }
+              >
+                SignUp
+              </NavLink>
+            </nav>
+            <form
+              onSubmit={handleSubmit(myHandleSubmit)}
+              className="rounded-2xl border border-lightPink bg-white/80 p-4 shadow-sm backdrop-blur sm:p-5">
+              <div className="my-5">
+                <h3 className="mt-1 text-3xl font-bold bg-linear-to-r from-burgundy via-primePink to-lightPink bg-clip-text text-transparent">
+                  Create a new account
+                </h3>
+                <p className="mt-1 text-sm font-bold text-darkText">
+                  It is quick and easy.
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter Your Name"
+                  id="name"
+                  className="focus:border-primePink focus:outline-none focus:ring-0 my-2 border border-lightPink bg-softRose shadow p-3 rounded-xl placeholder:text-lightPink "
+                  {...register(
+                    "name",
+
+
+
+
+
+
+
+                  )}
+                />
+
+                {formState.errors.name && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.name?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="userName">UserName</label>
+                <input
+                  type="text"
+                  id="userName"
+                  placeholder="Enter A UserName"
+                  {...register(
+                    "username",
+
+
+
+
+
+
+
+                  )}
+                  className="my-2 border border-lightPink focus:border-primePink focus:outline-none focus:ring-0 bg-softRose shadow p-3 rounded-xl placeholder:text-lightPink "
+                />
+                {formState.errors.username && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.username?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter Your Email Address"
+                  {...register("email")}
+                  className="my-2 focus:border-primePink focus:outline-none focus:ring-0 border border-lightPink bg-softRose shadow p-3 rounded-xl placeholder:text-lightPink "
+                />
+                {formState.errors.email && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.email?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="dateOfBirth">Date Of Birth</label>
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  {...register(
+                    "dateOfBirth",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  )}
+                  className="my-2  border border-lightPink bg-softRose shadow p-3 rounded-xl focus:border-primePink focus:outline-none focus:ring-0"
+                />
+                {formState.errors.dateOfBirth && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.dateOfBirth?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="gender" className="mb-2.5">
+                  Gender
+                </label>
+                <div className="flex gap-3 items-center">
+                  <label htmlFor="male">Male</label>
+                  <input
+                    type="radio"
+                    value="male"
+                    {...register(
+                      "gender",
+
+
+
+                    )}
+                    id="male"
+                    className="my-2 size-4 shrink-0 appearance-none rounded-full
+           border-2 border-lightPink bg-softRose
+           checked:border-softRose checked:bg-primePink
+           focus:outline-none focus:ring-2 focus:ring-lightPink"
+                  />
+                  <label htmlFor="female">Female</label>
+                  <input
+                    type="radio"
+                    value="female"
+                    {...register(
+                      "gender",
+
+
+
+                    )}
+                    id="female"
+                    className="my-2 size-4 shrink-0 appearance-none rounded-full
+           border-2 border-lightPink bg-softRose
+           checked:border-softRose checked:bg-primePink
+           focus:outline-none focus:ring-2 focus:ring-lightPink"
+                  />
+                </div>
+                {formState.errors.gender && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.gender?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  placeholder="Create a password"
+                  {...register("password")}
+                  id="password"
+                  className="my-2 border border-lightPink bg-softRose shadow p-3 rounded-xl placeholder:text-lightPink focus:border-primePink focus:outline-none focus:ring-0"
+                />
+                {formState.errors.password && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.password?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="repassword">rePassword</label>
+                <input
+                  type="password"
+                  id="repassword"
+                  placeholder="Re-enter your password"
+                  {...register("rePassword")}
+                  className="my-2 border border-lightPink bg-softRose shadow p-3 rounded-xl placeholder:text-lightPink focus:border-primePink focus:outline-none focus:ring-0"
+                />
+                {formState.errors.rePassword && (
+                  <p className="text-burgundy bg-lightPink border-deep border p-2 rounded-2xl font-medium">
+                    {formState.errors?.rePassword?.message}
+                  </p>
+                )}
+              </div>
+              <button
+                disabled={loading}
+                className="w-full rounded-xl my-5 py-3 cursor-pointer text-base font-extrabold text-softRose transition disabled:opacity-60 bg-burgundy hover:bg-deep flex items-center justify-center">
+                {loading ? (
+                  <Hearts
+                    height="25"
+                    width="100"
+                    color="#fff7fe"
+                    ariaLabel="hearts-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                ) : (
+                  "SignUp"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
