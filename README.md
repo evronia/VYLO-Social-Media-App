@@ -74,3 +74,9 @@ src/
 ├── App.tsx       Application routes and providers
 └── App.css       Global styles and theme tokens
 ```
+## Screenshots 
+<p align="center">
+  <img src="./screenshots/homepage.png"
+       alt="VYLO socialApp Website Homepage"
+       width="100%">
+</p>
